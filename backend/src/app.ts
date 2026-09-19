@@ -3,6 +3,8 @@ import cors from "cors";
 
 import categoryRoutes from "./routes/category.routes.js";
 import productRoutes from "./routes/product.routes.js";
+import pickupSlotRoutes from "./routes/pickup-slot.routes.js";
+import orderRoutes from "./routes/order.routes.js";
 
 const app = express();
 
@@ -15,8 +17,25 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
-app.use("/api/categories", categoryRoutes);
-app.use("/api/products", productRoutes);
+app.use(
+  "/api/categories",
+  categoryRoutes,
+);
+
+app.use(
+  "/api/products",
+  productRoutes,
+);
+
+app.use(
+  "/api/pickup-slots",
+  pickupSlotRoutes,
+);
+
+app.use(
+  "/api/orders",
+  orderRoutes,
+);
 
 app.use((_req, res) => {
   res.status(404).json({

@@ -79,6 +79,18 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: number) {
+  const orderItemCount = await prisma.orderItem.count({
+    where: {
+      productId: id,
+    },
+  });
+
+  if (orderItemCount > 0) {
+    throw new Error(
+      "Cannot delete a product that is used in an existing order",
+    );
+  }
+
   return prisma.product.delete({
     where: { id },
   });

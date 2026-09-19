@@ -8,7 +8,7 @@ import {
 } from "../services/product.service.js";
 
 function parseId(value: string | string[] | undefined): number | null {
-  // Accept string, array of strings, or undefined (from express params)
+  
   const raw = Array.isArray(value) ? value[0] : value;
 
   if (typeof raw !== "string") {
@@ -263,9 +263,20 @@ export async function removeProduct(
   try {
     const product = await deleteProduct(id);
 
-    res.json(product);
-  } catch {
-    res.status(404).json({
+    return res.json(product);
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Product not found";
+
+    if (message.includes("existing order")) {
+      return res.status(409).json({
+        message,
+      });
+    }
+
+    return res.status(404).json({
       message: "Product not found",
     });
   }

@@ -8,7 +8,7 @@ import {
 } from "../services/category.service.js";
 
 function parseId(value: string | string[] | undefined): number | null {
-  // Accept string, array of strings, or undefined (from express params)
+
   const raw = Array.isArray(value) ? value[0] : value;
 
   if (typeof raw !== "string") {
