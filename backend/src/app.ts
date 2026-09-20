@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-
+import authRoutes from "./routes/auth.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import pickupSlotRoutes from "./routes/pickup-slot.routes.js";
@@ -35,6 +36,16 @@ app.use(
 app.use(
   "/api/orders",
   orderRoutes,
+);
+
+app.use(
+  "/api/auth",
+  authRoutes,
+);
+
+app.use(
+  "/api/admin",
+  adminRoutes,
 );
 
 app.use((_req, res) => {

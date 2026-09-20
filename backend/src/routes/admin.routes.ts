@@ -1,9 +1,8 @@
 import { Router } from "express";
 
 import {
-  addPickupSlot,
-  getPickupSlots,
-} from "../controllers/pickup-slot.controller.js";
+  getAdminSummary,
+} from "../controllers/admin.controller.js";
 
 import {
   authenticate,
@@ -12,13 +11,14 @@ import {
 
 const router = Router();
 
-router.get("/", getPickupSlots);
-
-router.post(
-  "/",
+router.use(
   authenticate,
   requireAdmin,
-  addPickupSlot,
+);
+
+router.get(
+  "/summary",
+  getAdminSummary,
 );
 
 export default router;

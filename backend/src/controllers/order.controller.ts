@@ -1,12 +1,10 @@
-import type {
-  Request,
-  Response,
-} from "express";
+import type { Request, Response } from "express";
 
 import {
   createOrder,
   getOrderByNumber,
   updateOrderStatus,
+  getAdminOrders,
 } from "../services/order.service.js";
 
 import { AppError } from "../lib/app-error.js";
@@ -196,5 +194,22 @@ export async function changeOrderStatus(
     return res.json(order);
   } catch (error) {
     return sendError(res, error);
+  }
+}
+
+export async function getAdminOrdersList(
+  _req: Request,
+  res: Response,
+) {
+  try {
+    const orders =
+      await getAdminOrders();
+
+    return res.json(orders);
+  } catch {
+    return res.status(500).json({
+      message:
+        "Failed to load orders",
+    });
   }
 }

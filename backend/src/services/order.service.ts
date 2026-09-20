@@ -337,11 +337,22 @@ export async function getOrderByNumber(
     where: {
       orderNumber,
     },
-    include: {
+    select: {
+      orderNumber: true,
+      pickupCode: true,
+      status: true,
+      totalPrice: true,
+      estimatedReadyAt: true,
+      createdAt: true,
+
       pickupSlot: true,
+
       items: {
-        include: {
-          product: true,
+        select: {
+          productName: true,
+          unitPrice: true,
+          quantity: true,
+          subtotal: true,
         },
       },
     },
@@ -413,5 +424,22 @@ export async function updateOrderStatus(
       pickupSlot: true,
       items: true,
     },
+  });
+}
+
+export async function getAdminOrders() {
+  return prisma.order.findMany({
+    include: {
+      pickupSlot: true,
+      items: {
+        include: {
+          product: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 100,
   });
 }

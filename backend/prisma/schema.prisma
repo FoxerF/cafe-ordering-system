@@ -92,3 +92,13 @@ model OrderItem {
   @@index([orderId])
   @@index([productId])
 }
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
