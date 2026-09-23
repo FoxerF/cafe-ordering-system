@@ -1,5 +1,7 @@
 import type {
   Category,
+  Order,
+  PickupSlot,
   Product,
 } from "../types";
 
@@ -26,8 +28,7 @@ async function request<T>(
 
   if (!response.ok) {
     throw new Error(
-      data.message ??
-        "Request failed",
+      data.message ?? "Request failed",
     );
   }
 
@@ -43,5 +44,41 @@ export function getCategories() {
 export function getProducts() {
   return request<Product[]>(
     "/products",
+  );
+}
+
+export function getPickupSlots() {
+  return request<PickupSlot[]>(
+    "/pickup-slots",
+  );
+}
+
+export interface CreateOrderInput {
+  customerName: string;
+  customerPhone: string;
+  customerComment?: string;
+  pickupSlotId: number;
+  items: {
+    productId: number;
+    quantity: number;
+  }[];
+}
+
+export function createOrder(
+  data: CreateOrderInput,
+) {
+  return request<Order>("/orders", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export function getOrder(
+  orderNumber: string,
+) {
+  return request<Order>(
+    `/orders/${encodeURIComponent(
+      orderNumber,
+    )}`,
   );
 }
