@@ -113,3 +113,46 @@ export async function createPickupSlot(data: {
     },
   });
 }
+
+export async function deactivatePickupSlot(
+  id: number,
+) {
+  const slot =
+    await prisma.pickupSlot.findUnique({
+      where: { id },
+    });
+
+  if (!slot) {
+    throw new AppError(
+      404,
+      "Pickup slot not found",
+    );
+  }
+
+  const activeOrders =
+    await prisma.order.count({
+      where: {
+        pickupSlotId: id,
+        status: {
+          notIn: [
+            "CANCELLED",
+            "COMPLETED",
+          ],
+        },
+      },
+    });
+
+  if (activeOrders > 0) {
+    throw new AppError(
+      409,
+      "Cannot deactivate a slot with active orders",
+    );
+  }
+
+  return prisma.pickupSlot.update({
+    where: { id },
+    data: {
+      isActive: false,
+    },
+  });
+}

@@ -51,3 +51,26 @@ export interface Order {
   pickupSlot: PickupSlot;
   items: OrderItem[];
 }
+
+export interface AuthUser {
+  id: number;
+  email: string;
+  role: string;
+  createdAt?: string;
+}
+
+export interface AdminSummarySlot {
+  id: number;
+  startsAt: string;
+  endsAt: string;
+  maxOrders: number;
+  currentOrders: number;
+  remainingOrders: number;
+}
+
+export interface AdminSummary {
+  activeOrders: number;
+  preparingOrders: number;
+  readyOrders: number;
+  upcomingSlots: AdminSummarySlot[];
+}

@@ -6,6 +6,7 @@ import type {
 import {
   createPickupSlot,
   getAvailablePickupSlots,
+  deactivatePickupSlot,
 } from "../services/pickup-slot.service.js";
 
 import { AppError } from "../lib/app-error.js";
@@ -80,5 +81,55 @@ export async function addPickupSlot(
     return res.status(201).json(slot);
   } catch (error) {
     return sendError(res, error);
+  }
+}
+
+export async function disablePickupSlot(
+  req: Request,
+  res: Response,
+) {
+  const value = Array.isArray(
+    req.params.id,
+  )
+    ? req.params.id[0]
+    : req.params.id;
+
+  if (
+    typeof value !== "string"
+  ) {
+    return res.status(400).json({
+      message: "Invalid pickup slot ID",
+    });
+  }
+
+  const id = Number(value);
+
+  if (
+    !Number.isInteger(id) ||
+    id <= 0
+  ) {
+    return res.status(400).json({
+      message: "Invalid pickup slot ID",
+    });
+  }
+
+  try {
+    const slot =
+      await deactivatePickupSlot(id);
+
+    return res.json(slot);
+  } catch (error) {
+    if (error instanceof AppError) {
+      return res.status(
+        error.statusCode,
+      ).json({
+        message: error.message,
+      });
+    }
+
+    return res.status(500).json({
+      message:
+        "Failed to deactivate pickup slot",
+    });
   }
 }

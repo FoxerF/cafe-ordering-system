@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+
 import { useCart } from "../context/CartContext";
 
 export default function Navbar() {
-  const { totalItems } = useCart();
+  const { totalItems } =
+    useCart();
 
   return (
     <header className="navbar">
@@ -20,6 +22,10 @@ export default function Navbar() {
 
         <Link to="/cart">
           Cart ({totalItems})
+        </Link>
+
+        <Link to="/admin/login">
+          Admin
         </Link>
       </nav>
     </header>

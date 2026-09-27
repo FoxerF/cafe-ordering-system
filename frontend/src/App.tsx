@@ -11,6 +11,8 @@ import MenuPage from "./pages/MenuPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderPage from "./pages/OrderPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
@@ -37,6 +39,16 @@ function App() {
           <Route
             path="/order/:orderNumber"
             element={<OrderPage />}
+          />
+
+          <Route
+            path="/admin/login"
+            element={<AdminLoginPage />}
+          />
+
+          <Route
+            path="/admin"
+            element={<AdminPage />}
           />
         </Routes>
       </CartProvider>
