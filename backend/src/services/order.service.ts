@@ -222,13 +222,6 @@ export async function createOrder(data: {
     },
   );
 
-  /*
-    Simple educational workload formula:
-
-    10 minutes base preparation
-    + 2 minutes per ordered item
-    + 3 minutes for every currently active order
-  */
   const preparationMinutes =
     10 +
     totalQuantity * 2 +
@@ -257,10 +250,6 @@ export async function createOrder(data: {
 
   return prisma.$transaction(
     async (tx) => {
-      /*
-        Re-check the slot inside the transaction
-        immediately before creating the order.
-      */
       const freshSlot =
         await tx.pickupSlot.findUnique({
           where: {
